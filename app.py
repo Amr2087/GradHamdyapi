@@ -40,7 +40,7 @@ def load_chat_history():
     return history
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['POST']) # Endpoint
 def webhook():
     data = request.get_json()
     if not data or 'message' not in data:
@@ -50,7 +50,7 @@ def webhook():
 
     # Build the conversation messages list:
     # Start with the system prompt
-    messages = [{"role": "system", "content": "you are a helpful assistant."}]
+    messages = [{"role": "system", "content": "you are a helpful assistant."}] # Mo salah
 
     # Load previous chat history and add them to the messages list
     history = load_chat_history()
