@@ -12,7 +12,7 @@ client = Groq(
 )
 
 # File where chat logs will be saved (using .jsonl extension for JSON Lines)
-CHAT_LOG_FILE = 'chat_log.jsonl'
+CHAT_LOG_FILE = '/tmp/chat_log.jsonl'
 
 
 def save_chat_log(user_message, assistant_message):
