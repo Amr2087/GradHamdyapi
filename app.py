@@ -190,14 +190,6 @@ PROMPTS = {
             "هل تريد المتابعة؟"
         )
     }
-
-def get_fixmate_response(user_message):
-    for key in PROMPTS:
-        if key in user_message:
-            return PROMPTS[key]
-
-    return generate_ai_response(user_message)
-
 def generate_ai_response(user_message):
     messages = [
         {"role": "system", "content": "أنت مساعد ذكي خاص بمنصة FixMate. يجب أن تكون إجاباتك دقيقة ومباشرة دون إضافة أي معلومات غير مطلوبة."},
@@ -215,16 +207,19 @@ def generate_ai_response(user_message):
             stream=False,
         )
         return chat_completion.choices[0].message.content.strip()
-    except Exception:
+    except Exception as e:
         return "عذرًا، حدث خطأ أثناء معالجة سؤالك. يرجى المحاولة مرة أخرى لاحقًا."
+
+def get_fixmate_response(user_message):
+    for key in PROMPTS:
+        if key in user_message:
+            return PROMPTS[key]
+    return generate_ai_response(user_message)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
     """Endpoint to handle incoming messages and generate responses."""
-    if request.content_type != 'application/json':
-        return jsonify({"error": "Invalid Content-Type. Expected application/json"}), 415
-
-    data = request.get_json(silent=True)
+    data = request.get_json()
     if not data or 'message' not in data:
         return jsonify({"error": "Missing 'message' in request body"}), 400
 
