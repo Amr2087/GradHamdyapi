@@ -211,10 +211,13 @@ def generate_ai_response(user_message):
         return "عذرًا، حدث خطأ أثناء معالجة سؤالك. يرجى المحاولة مرة أخرى لاحقًا."
 
 def get_fixmate_response(user_message):
-    for key in PROMPTS:
-        if key in user_message:
-            return PROMPTS[key]
-    return generate_ai_response(user_message)
+    try:
+        for key in PROMPTS:
+            if key in user_message:
+                return PROMPTS[key]
+        return generate_ai_response(user_message)
+    except Exception as e:
+        return str(e)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
